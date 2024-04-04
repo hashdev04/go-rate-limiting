@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const limit uint = 2
+const limit uint = 5
 
 func keyFunc(c *gin.Context) string {
 	return c.ClientIP()
