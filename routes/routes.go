@@ -13,6 +13,6 @@ func Routes(router *gin.Engine) {
 	router.PATCH("/books/:id", controllers.UpdateBook)
 	router.DELETE("/books/:id", controllers.DeleteBook)
 
-	// Rate limit the POST endpoint
+	// POST endpoint with rate limit - TASK 01
 	router.POST("/books", middleware.EnsureRateLimit, controllers.CreateBook)
 }

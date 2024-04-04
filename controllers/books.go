@@ -8,8 +8,9 @@ import (
 )
 
 type CreateBookInput struct {
-	Title  string `json:"title" binding:"required"`
-	Author string `json:"author" binding:"required"`
+	Title       string `json:"title" binding:"required"`
+	Author      string `json:"author" binding:"required"`
+	IsAvailable *bool  `json:"is_available" binding:"required"`
 }
 
 type UpdateBookInput struct {
@@ -33,7 +34,7 @@ func CreateBook(c *gin.Context) {
 		return
 	}
 
-	book := models.Book{Title: input.Title, Author: input.Author}
+	book := models.Book{Title: input.Title, Author: input.Author, IsAvailable: *input.IsAvailable}
 	models.DB.Create(&book)
 
 	c.JSON(http.StatusOK, gin.H{"data": book})
