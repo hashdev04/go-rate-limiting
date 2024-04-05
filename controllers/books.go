@@ -3,9 +3,16 @@ package controllers
 import (
 	"Documents/Work/go/first/hello-go/models"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
+
+type Booking struct {
+	CheckIn  time.Time `form:"check_in" binding:"required,bookabledate" time_format:"2006-01-02"`
+	CheckOut time.Time `form:"check_out" binding:"required,gtfield=CheckIn,bookabledate" time_format:"2006-01-02"`
+}
 
 type CreateBookInput struct {
 	Title       string `json:"title" binding:"required"`
@@ -16,6 +23,17 @@ type CreateBookInput struct {
 type UpdateBookInput struct {
 	Title  string `json:"title"`
 	Author string `json:"author"`
+}
+
+func GetBookable(c *gin.Context) {
+	var b Booking
+	err := c.ShouldBindWith(&b, binding.Query)
+
+	if err == nil {
+		c.JSON(http.StatusOK, gin.H{"message": "Booking dates are valid!"})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
 }
 
 func FindBooks(c *gin.Context) {
